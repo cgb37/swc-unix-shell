@@ -25,7 +25,7 @@
 | 11:55 | Wrap-up, where to go next | 12:00 |
 
 **If you're behind:** skip challenges first (do 1 per episode), then skip `man`/`help` demos, then skip wildcards `?`.
-**If you're ahead:** do more challenges, then do the Ep 4 `animals.csv` pipe work, then show a loop as a teaser.
+**If you're ahead:** do more challenges, then the Ep 4 `animals.csv` pipe work, then continue into **Ep 5 Loops → Ep 6 Scripts → Ep 7 Finding Things** (full sections after Ep 4 below). Each is stand-alone, so you can stop after any one and jump to Wrap-up.
 
 ---
 
@@ -108,6 +108,8 @@ Expected: `exercise-data  north-pacific-gyre` (maybe with `/` marks).
 ## 9:45 EPISODE 1: INTRODUCING THE SHELL (10 min)
 
 **Goal:** What is the shell, and why bother?
+**Why it matters:** everything today is about handling many files without clicking each one. Nelle's story (below) is the thread through the whole lesson.
+**Next:** "To use it, we first need to know where we are and how to move around." → Ep 2
 
 SAY:
 - "The shell is a program that takes typed commands and runs other programs."
@@ -134,6 +136,9 @@ Output: `ks: command not found`. "Typos happen. Nothing is broken."
 ## 9:55 EPISODE 2: NAVIGATING FILES AND DIRECTORIES (40 min)
 
 **Goals:** file vs directory, absolute vs relative paths, options & arguments, tab completion.
+**Why it matters:** the shell is always "standing" in one folder. Every command acts relative to that spot, so this is the mental map for the rest of the day.
+**Bridge in:** "A moment ago we ran `ls`. But what was it listing? Let's find out where we are."
+**Bridge out:** "We can look around now. Next we start *changing* things: making, copying, moving, deleting." → Ep 3
 
 ### Where am I?
 
@@ -252,6 +257,9 @@ Toggles between the last two places.
 ## 10:45 EPISODE 3: WORKING WITH FILES AND DIRECTORIES (40 min)
 
 **Goals:** create, copy, move, delete files and dirs; wildcards.
+**Why it matters:** this is the everyday housekeeping of research data. Wildcards (`*`) are the first taste of "act on many files at once."
+**Bridge in:** "Now that you can navigate, let's start managing files."
+**Bridge out:** "We've got lots of files. How do we ask questions about them, like which is shortest? That's pipes." → Ep 4
 
 ### Setup
 ```
@@ -359,6 +367,9 @@ ls *t??ne.pdb
 ## 11:25 EPISODE 4: PIPES AND FILTERS (30 min)
 
 **Goal:** chain small commands. This is the "aha" moment, so protect it. Skip challenges to get to the pipe.
+**Why it matters:** each tool does one small job; combining them answers real questions about data with no spreadsheet.
+**Bridge in:** "We counted lines in one file. What about all of them, sorted?"
+**Bridge out (if time):** "Pipes handle a whole batch at once. But what if you want to run a command separately on each file?" → Ep 5 Loops. Otherwise → Wrap-up.
 
 ```
 cd ~/Desktop/shell-lesson-data/exercise-data/alkanes
@@ -421,10 +432,202 @@ Unique animal names, then counts.
 
 ---
 
+## EXTRAS IF AHEAD (only start one if it's before ~11:40)
+
+> Each of these stands alone. Do a small piece, then jump to WRAP-UP at 11:55. Say "we'll just get a taste" so nobody feels they missed something.
+> Windows reminder: these are the same on Git Bash. Output below comes from the lesson page.
+
+### EPISODE 5: LOOPS (~25 min if you do all of it)
+
+**Goal:** repeat the same command for each file in a list.
+**Why it matters:** this is the "automation" payoff from Episode 1. Nelle needs to run a program on 1520 files.
+**Bridge in:** "Pipes handle a batch together. A loop runs one command on each file separately."
+
+```
+cd ~/Desktop/shell-lesson-data/exercise-data/creatures
+ls
+head -n 5 basilisk.dat minotaur.dat unicorn.dat
+```
+(Use `cd ~/OneDrive<Tab>/Desktop/...` if that's their Desktop.)
+
+Show the pain, then fix it:
+
+```
+for filename in basilisk.dat minotaur.dat unicorn.dat
+do
+    echo $filename
+    head -n 2 $filename | tail -n 1
+done
+```
+Output pairs each filename with its species: `basiliscus vulgaris`, `bos hominus`, `equus monoceros`.
+
+SAY:
+- The prompt changes from `$` to `>` while the loop is unfinished. That's normal. **Don't type the `>`**.
+- `filename` is a variable name (could be anything). `$filename` means "the value of it".
+- Read it aloud: "for each filename in this list, do these commands, done."
+
+**Variables:** `$filename` is the value. `${filename}` is the same thing.
+
+Optional next steps:
+```
+for filename in *.dat
+do
+    cp $filename original-$filename
+done
+```
+(Backs up each file.) Then a **dry run** with `echo` first:
+```
+for datafile in *.pdb
+do
+    echo "cat $datafile >> all.pdb"
+done
+```
+"Always `echo` first when it's destructive."
+
+**Spaces in filenames:** unquoted `red dragon.dat` becomes two names; quote it: `"$filename"`. (Reminds why we avoid spaces.)
+
+**History shortcuts (quick, useful):** Up arrow, **Ctrl+R** to search past commands, `!!` = repeat last, `history | tail -n 5`.
+
+**Nelle's pipeline (the story payoff):**
+```
+cd ~/Desktop/shell-lesson-data/north-pacific-gyre
+for datafile in NENE*A.txt NENE*B.txt
+do
+    echo $datafile stats-$datafile
+done
+```
+Then with the real script (`goostats.sh` is in that folder):
+```
+for datafile in NENE*A.txt NENE*B.txt; do echo $datafile; bash goostats.sh $datafile stats-$datafile; done
+```
+`;` separates commands on one line. Ctrl+C stops it.
+
+**Challenges:** write a loop to echo 0–9 (`for loop_variable in 0 1 2 3 4 5 6 7 8 9`, or `{0..9}`); what does `c*` match (just `cubane.pdb`).
+
+**Bridge out:** "That loop is useful but typed out each time. Let's save it in a file." → Ep 6
+
+---
+
+### EPISODE 6: SHELL SCRIPTS (~20 min)
+
+**Goal:** save commands in a file so you can rerun them.
+**Why it matters:** reproducibility. A script is a record of what you did, and you can hand it to a colleague.
+**Bridge in:** "A loop you typed is gone when you close the window. Save it."
+
+```
+cd ~/Desktop/shell-lesson-data/exercise-data/alkanes
+nano middle.sh
+```
+Type one line in nano:
+```
+head -n 15 octane.pdb | tail -n 5
+```
+Ctrl+O, Enter, Ctrl+X. Run it:
+```
+bash middle.sh
+```
+
+Make it flexible: edit `middle.sh` to use arguments:
+```
+head -n 15 "$1" | tail -n 5
+```
+Run with different files:
+```
+bash middle.sh octane.pdb
+bash middle.sh pentane.pdb
+```
+Then add more arguments:
+```
+head -n "$2" "$1" | tail -n "$3"
+bash middle.sh pentane.pdb 15 5
+bash middle.sh pentane.pdb 20 5
+```
+SAY: "`$1` `$2` `$3` are the first, second and third things you type after the script name." Add a comment (`#`) line at the top for the usage.
+
+**All arguments:** `$@`. Example `sorted.sh`:
+```
+# Sort files by their length.
+# Usage: bash sorted.sh one_or_more_filenames
+wc -l "$@" | sort -n
+```
+```
+bash sorted.sh *.pdb
+```
+
+**Nelle's script (story payoff):** in `north-pacific-gyre`, `nano do-stats.sh`:
+```
+# Calculate stats for data files.
+for datafile in "$@"
+do
+    echo $datafile
+    bash goostats.sh $datafile stats-$datafile
+done
+```
+```
+bash do-stats.sh NENE*A.txt NENE*B.txt
+```
+
+**Challenge:** write a script that prints the unique species in files like `animals.csv` (uses `cut -d , -f 2 | sort | uniq` in a loop over `$@`).
+
+**Bridge out:** "We've been handed lots of files. How do you search *inside* them?" → Ep 7
+
+---
+
+### EPISODE 7: FINDING THINGS (~20 min)
+
+**Goal:** search file contents (`grep`) and find files by name (`find`).
+**Why it matters:** the everyday question: "where did I put that? which file mentions X?"
+**Bridge in:** "You have many files. Which one has the thing you need?"
+
+```
+cd ~/Desktop/shell-lesson-data/exercise-data/writing
+cat haiku.txt
+grep not haiku.txt
+grep The haiku.txt
+grep -w The haiku.txt
+grep -n "it" haiku.txt
+grep -n -w -i "the" haiku.txt
+grep -n -w -v "the" haiku.txt
+```
+SAY: "grep prints the lines that contain a pattern." Flags: `-w` whole word, `-n` line numbers, `-i` ignore case, `-v` invert (lines that DON'T match), `-r` search a whole folder recursively.
+
+```
+grep -r Yesterday .
+```
+
+**find:**
+```
+cd ~/Desktop/shell-lesson-data/exercise-data
+find .
+find . -type d
+find . -type f
+find . -name "*.txt"
+```
+Combine them (the pay-off):
+```
+wc -l $(find . -name "*.txt")
+grep "searching" $(find . -name "*.txt")
+```
+SAY: "`$( )` runs the inside command first and pastes its output."
+
+**Challenge:** count how often each March sister appears:
+```
+for sis in Jo Meg Beth Amy
+do
+    echo $sis:
+    grep -ow $sis LittleWomen.txt | wc -l
+done
+```
+(Good callback: combines loop + grep + pipe.)
+
+Skip `grep -E` regex; mention "there's a whole language for patterns, called regular expressions."
+
+---
+
 ## 11:55 WRAP-UP (5 min)
 
 - [ ] Recap with the room: `pwd ls cd mkdir nano touch cp mv rm wc sort head |  >`
-- [ ] "We didn't get to **loops, scripts, grep, find**. That's the next session / next steps."
+- [ ] If you didn't reach them: "We didn't get to **loops, scripts, grep, find**. They're in the lesson page for you to try."
 - [ ] Point to the lesson: https://swcarpentry.github.io/shell-novice/
 - [ ] Mention `cd ~/Desktop/shell-lesson-data` is where to restart.
 - [ ] Ask for feedback on a sticky: one thing that worked, one that didn't.
