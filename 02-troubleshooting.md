@@ -63,7 +63,7 @@ Drop the zip into that window and Extract All. The lesson path becomes `~/shell-
 
 | Symptom | Fix |
 |---|---|
-| `ls Desktop/shell-lesson-data` shows `shell-lesson-data` again | Doubled folder from double-click extract. Either `cd` one level deeper and use that, or re-extract with **right-click → Extract All…** |
+| `ls Desktop/shell-lesson-data` shows `shell-lesson-data` again | Doubled folder: Extract All's default destination already ends in `shell-lesson-data` and the zip contains that folder too. In Explorer, drag the inner `shell-lesson-data` onto the Desktop and delete the empty outer one; or re-extract with the destination changed to end at `...\Desktop`. Or just `cd` one level deeper and use that |
 | Can't find the downloaded zip | Check Downloads: `ls ~/Downloads`. Or Explorer → Downloads. |
 | Zip opens as a "folder" in Explorer but contents don't show in Git Bash | It's not extracted. Right-click → Extract All. |
 | Mac: Safari auto-unzipped into Downloads | Just move the `shell-lesson-data` folder to Desktop in Finder |

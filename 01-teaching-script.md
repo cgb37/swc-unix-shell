@@ -54,7 +54,7 @@
 
 ### Everyone: get the data
 1. Download **shell-lesson-data.zip** from the lesson page (Setup section): https://swcarpentry.github.io/shell-novice/data/shell-lesson-data.zip
-2. **Windows: right-click the zip → Extract All…** (not double-click: it makes a doubled `shell-lesson-data/shell-lesson-data` folder).
+2. **Windows: right-click the zip → Extract All…**, then in the dialog **delete the trailing `\shell-lesson-data` from the destination so it ends at `...\Desktop`**. (The zip already contains a `shell-lesson-data` folder; the default destination adds a second one, giving `shell-lesson-data/shell-lesson-data`. Verified on the instructor's Windows laptop: with the destination ending at `...\Desktop`, the folder lands in `~/Desktop`.)
 3. Target: a folder named `shell-lesson-data` on the **Desktop**.
 
 ### ⚠ DESKTOP CHECK (Windows, 2 min) — no new folders needed
