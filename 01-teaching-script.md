@@ -224,6 +224,9 @@ cd ~/Desktop/shell-lesson-data
 
 SAY: "Leading `/` = start from the root. No leading `/` = start from here."
 
+### Tidy the screen
+Ctrl+L clears the screen (scrollback is kept). The lesson also shows `clear -x`.
+
 ### Tab completion (the most important habit)
 Type `cd ~/Desk` then press **Tab**. Press Tab twice to list options.
 SAY: "Press Tab constantly. It prevents typos and saves time."
@@ -239,6 +242,7 @@ Toggles between the last two places.
 ### Challenges (do 1–2, skip the rest if behind)
 - **`ls` options:** `ls -l`, `ls -l -h` (sizes human-readable)
 - **Reverse chronological:** `ls -rt` (newest last)
+- **`ls` reading comprehension:** `ls -r -F` lists in reverse order with `/` on folders
 - **Absolute vs relative:** from `/Users/nelle/data`, to reach `/Users/nelle`: `cd ~`, `cd ..`, `cd`, `cd ~/data/..` all work; `cd .`, `cd /`, `cd ../..` don't.
 - **Relative path:** `pwd` = `/Users/thing`, `ls -F ../backup` → `original/ pnas_final/ pnas_sub/`
 
@@ -358,7 +362,7 @@ ls *t??ne.pdb
 - **Using `rm` safely:** what does `rm -i` do? Prompts; `y` deletes.
 - **Moving files:** `mv sucrose.dat maltose.dat ../raw`
 - **List filenames matching pattern** (want `ethane.pdb methane.pdb`): `ls *t??ne.pdb`
-- **Reproduce a folder structure:** `mkdir -p` approach.
+- **Reproduce a folder structure:** the options using `mkdir -p` work; an option that creates a child before its parent fails.
 
 > ✅ By 11:25 everyone should be able to: make a folder, make a file in nano, copy, move/rename, delete, use `*`.
 
@@ -459,7 +463,7 @@ do
     head -n 2 $filename | tail -n 1
 done
 ```
-Output pairs each filename with its species: `basiliscus vulgaris`, `bos hominus`, `equus monoceros`.
+Output pairs each filename with its classification line: `CLASSIFICATION: basiliscus vulgaris`, `CLASSIFICATION: bos hominus`, `CLASSIFICATION: equus monoceros` (checked against the real data).
 
 SAY:
 - The prompt changes from `$` to `>` while the loop is unfinished. That's normal. **Don't type the `>`**.

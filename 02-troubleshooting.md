@@ -144,7 +144,7 @@ bash
 | 3 | `ls` pattern for ethane + methane | `ls *t??ne.pdb` |
 | 3 | `cp` with 3+ args | last arg must be a directory |
 | 3 | Move all `.dat` to `analyzed` | `mv *.dat analyzed` |
-| 3 | Make `data/raw` and `data/processed` | `mkdir -p data/raw data/processed` |
+| 3 | Reproduce a folder structure | Options using `mkdir -p` work; creating a child before its parent fails (no `-p`) |
 | 4 | `sort -n` | numeric sort |
 | 4 | 3 shortest files | `wc -l * \| sort -n \| head -n 3` |
 | 4 | Count per animal | `cut -d, -f 2 animals.csv \| sort \| uniq -c` |

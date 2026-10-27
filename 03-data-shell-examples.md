@@ -83,12 +83,13 @@ ls *.pdb
 ls c*
 ls *ane.pdb
 ls ?ethane.pdb
-ls *p*
+ls p*
 ```
 Reasonable expected outputs given the six file names (cubane, ethane, methane, octane, pentane, propane):
 - `c*` → `cubane.pdb`
 - `?ethane.pdb` → `methane.pdb`
-- `*p*` → `pentane.pdb propane.pdb`
+- `p*` → `pentane.pdb propane.pdb`
+- Gotcha worth showing: `*p*` matches **all six** files, because `.pdb` contains a `p`. `*ane.pdb` also matches all six (checked).
 Predicting out loud keeps people engaged and reveals who's confused.
 
 ### 2.6 Episode 4 (Pipes): "which files are shortest/longest?"
@@ -134,7 +135,7 @@ do
     head -n 2 $filename | tail -n 1
 done
 ```
-Lesson output: `basiliscus vulgaris`, `bos hominus`, `equus monoceros`.
+Output (checked against the real data): `CLASSIFICATION: basiliscus vulgaris`, `CLASSIFICATION: bos hominus`, `CLASSIFICATION: equus monoceros`.
 Just show it, don't teach it: "That is what you'll learn next time."
 
 ---
