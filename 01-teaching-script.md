@@ -147,6 +147,8 @@ ls
 ls -F
 ```
 - `-F` adds `/` to directories. "ls is the command, `-F` is the **option**."
+- ⚠ **Git Bash aliases `ls` to `ls -F --color=auto`**, so on Windows plain `ls` ALREADY shows `name/`. Both commands look the same there. Say: "Git Bash adds `-F` for you. On a Mac, plain `ls` has no slashes." To show the real difference on Windows: `\ls` (backslash bypasses the alias). Check with `type ls`.
+- Your Mac: `alias ls='ls -F'` makes your projected screen match Windows. Say out loud that you set it.
 
 ### Getting help
 

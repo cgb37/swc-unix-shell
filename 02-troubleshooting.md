@@ -117,7 +117,7 @@ Drop the zip into that window and Extract All. The lesson path becomes `~/shell-
 | `wc` output spacing | normal | padded with extra leading spaces; same numbers |
 | `cp thesis thesis_backup` error text | GNU wording (`-r not specified; omitting directory`) | macOS: `cp: thesis is a directory (not copied).` |
 | `rm thesis` error | `Is a directory` | `is a directory` (same idea) |
-| `ls -F` | same | same |
+| `ls` vs `ls -F` | Same output: Git Bash aliases `ls` to `ls -F --color=auto` (check: `type ls`). `\ls` bypasses the alias. | Plain `ls` has no slashes; `ls -F` adds them |
 | Hidden file `.DS_Store` | n/a | May appear in `ls -a`. Ignore. |
 | Line endings | CRLF vs LF may affect `wc` slightly in some files (unverified) | n/a |
 | Tab completion | works | works |
